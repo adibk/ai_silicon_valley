@@ -1,3 +1,6 @@
+# Project Specific
+model_evaluation.ipynb
+
 # Python
 __pycache__/
 *.py[cod]
