@@ -1,5 +1,8 @@
 # Project Specific
 model_evaluation.ipynb
+!data/
+map.html
+california.png
 
 # Python
 __pycache__/
@@ -49,9 +52,11 @@ venv/
 
 # Data
 # data/
-# html/
+html/
 csv/
 *.csv
+*.domain
+*.data
 
 # Media files
 media/
