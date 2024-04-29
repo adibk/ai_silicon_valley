@@ -1,6 +1,7 @@
 # Project Specific
 model_evaluation.ipynb
 !data/
+!static/
 map.html
 california.png
 
@@ -62,7 +63,7 @@ csv/
 media/
 
 # Static files
-static/
+# static/
 
 # pyenv
 .python-version
