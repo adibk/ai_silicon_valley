@@ -1,5 +1,6 @@
+
 function uploadData() {
-var formData = new FormData($('#upload-form')[0]);
+    var formData = new FormData($('#upload-form')[0]);
     $.ajax({
         type: "POST",
         url: "/predict",
@@ -7,24 +8,25 @@ var formData = new FormData($('#upload-form')[0]);
         contentType: false,
         processData: false,
         success: function(response) {
-            $('#prediction-result').html('Prediction from upload: ' + response);
+            $('#prediction-result-upload').html('Prediction from upload: ' + response);
         },
         error: function(error) {
-            $('#prediction-result').html('Error: ' + error.responseText);
+            $('#prediction-result-upload').html('Error: ' + error.responseText);
         }
     });
 }
 
 function predictData() {
+    alert('test')
     $.ajax({
         type: "POST",
         url: "/predict_manual",
         data: $('#manual-form').serialize(),
         success: function(response) {
-            $('#prediction-result').html('Prediction from manual data: ' + response);
+            $('#prediction-result-form').html('Prediction from manual data: ' + response);
         },
         error: function(error) {
-            $('#prediction-result').html('Error: ' + error.responseText);
+            $('#prediction-result-form').html('Error: ' + error.responseText);
         }
     });
 }

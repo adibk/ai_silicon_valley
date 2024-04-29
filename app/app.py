@@ -29,7 +29,8 @@ def predict():
 
 @app.route('/predict_manual', methods=['POST'])
 def predict_manual():
-    try:
+    # try:
+        print('test')
         # Collect all form data
         data = {
             'longitude': float(request.form['longitude']),
@@ -42,16 +43,21 @@ def predict_manual():
             'median_income': float(request.form['median_income']),
             'ocean_proximity': request.form['ocean_proximity']
         }
-        
+        print('test')
+        print(data)
         # Convert the form data into a DataFrame
         df = pd.DataFrame([data])
         # Predict using the loaded model
         predictions = model.predict(df)
         return f"Predicted House Value: {predictions[0]}"
-    except Exception as e:
-        return f"Error processing input data: {str(e)}"
+    # except Exception as e:
+    #     return f"Error processing input data: {str(e)}"
 
-    
+@app.route('/pages-blank')
+def pages_blank():
+    return render_template('pages-blank.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
