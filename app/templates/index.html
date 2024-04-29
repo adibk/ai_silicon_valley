@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload new Dataset or Enter Data Manually</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Upload new Dataset for Prediction</h1>
+    <form id="upload-form" action="/predict" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <input type="button" value="Upload and Predict" onclick="uploadData()">
+    </form>
+
+    <h2>Or enter data manually:</h2>
+    <form id="manual-form">
+        <label for="longitude">Longitude:</label>
+        <input type="text" id="longitude" name="longitude"><br>
+
+        <label for="latitude">Latitude:</label>
+        <input type="text" id="latitude" name="latitude"><br>
+
+        <label for="housing_median_age">Housing Median Age:</label>
+        <input type="text" id="housing_median_age" name="housing_median_age"><br>
+
+        <label for="total_rooms">Total Rooms:</label>
+        <input type="text" id="total_rooms" name="total_rooms"><br>
+
+        <label for="total_bedrooms">Total Bedrooms:</label>
+        <input type="text" id="total_bedrooms" name="total_bedrooms"><br>
+
+        <label for="population">Population:</label>
+        <input type="text" id="population" name="population"><br>
+
+        <label for="households">Households:</label>
+        <input type="text" id="households" name="households"><br>
+
+        <label for="median_income">Median Income:</label>
+        <input type="text" id="median_income" name="median_income"><br>
+
+        <label for="ocean_proximity">Ocean Proximity:</label>
+        <input type="text" id="ocean_proximity" name="ocean_proximity"><br>
+        <input type="button" value="Predict" onclick="predictData()">
+    </form>
+
+    <div id="prediction-result"></div>  <!-- Placeholder for the prediction result -->
+
+    <script>
+        function uploadData() {
+            var formData = new FormData($('#upload-form')[0]);
+            $.ajax({
+                type: "POST",
+                url: "/predict",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    $('#prediction-result').html('Prediction from upload: ' + response);
+                },
+                error: function(error) {
+                    $('#prediction-result').html('Error: ' + error.responseText);
+                }
+            });
+        }
+
+        function predictData() {
+            $.ajax({
+                type: "POST",
+                url: "/predict_manual",
+                data: $('#manual-form').serialize(),
+                success: function(response) {
+                    $('#prediction-result').html('Prediction from manual data: ' + response);
+                },
+                error: function(error) {
+                    $('#prediction-result').html('Error: ' + error.responseText);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
