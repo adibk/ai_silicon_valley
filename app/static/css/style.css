@@ -37,9 +37,14 @@
   color: #fff;
   text-decoration: none;
 }
+
 input:valid {
   background-color: white !important;
   border-color: #ccc !important;
+}
+
+.prediction-result-container, .prediction-result-form-container {
+  display: none;
 }
 
 /*--------------------------------------------------------------

@@ -29,8 +29,12 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+  
   <!-- Templates Main CSS File -->
   <link href="static/css/style.css" rel="stylesheet">
+  <!-- map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 
 <body>
@@ -158,8 +162,8 @@
               <a href="#">
                 <img src="static/img/messages-1.jpg" alt="" class="rounded-circle">
                 <div>
-                  <h4>Maria Hudson</h4>
-                  <p>We have a new prediction for you</p>
+                  <h4>La Boulangere</h4>
+                  <p>Dis a Ahmed qu'il arrete de passer</p>
                   <p>4 hrs. ago</p>
                 </div>
               </a>
@@ -251,7 +255,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-menu-button-wide"></i><span>Upload</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -329,7 +333,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-journal-text"></i><span>House Forms</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -357,7 +361,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-layout-text-window-reverse"></i><span>House for Sales</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -396,28 +400,6 @@
         </ul>
       </li><!-- End Charts Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-gem"></i><span>Icons</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="icons-bootstrap.html">
-              <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
-            </a>
-          </li>
-          <li>
-            <a href="icons-remix.html">
-              <i class="bi bi-circle"></i><span>Remix Icons</span>
-            </a>
-          </li>
-          <li>
-            <a href="icons-boxicons.html">
-              <i class="bi bi-circle"></i><span>Boxicons</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Icons Nav -->
 
       <li class="nav-heading">Pages</li>
 
@@ -508,11 +490,34 @@
                     </div>
                     <button type="button" class="btn btn-primary" onclick="uploadData()">Upload</button>
                   </form>
+                </div>
+
+              </div>
+            </div><!-- End Prediction module Upload-->
+
+            <!-- Prediction result -->
+            <div class="col-12 prediction-result-container">
+              <div class="card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+                    <li><a class="dropdown-item" href="#">KNN</a></li>
+                    <li><a class="dropdown-item" href="#">Linear Regression</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Prediction Result <span>KNN method</span></h5>
                   <div id="prediction-result-upload"></div>  <!-- Placeholder for the prediction result -->
                 </div>
 
               </div>
-            </div><!-- End Prediction modules -->
+            </div><!-- End Prediction result -->
+
 
  
             <!-- Prediction modules Form -->
@@ -534,7 +539,12 @@
                   <h5 class="card-title">Housing Block information <span>KNN</span></h5>
 
                   <!-- Floating Labels Form -->
-                  <form class="row g-3">
+                  <form id="manual-form" action="/predict" method="post" enctype="multipart/form-data" class="row g-3">
+                    <div class="col-md-12">
+                      <div id="mapid" style="height: 400px;"></div>
+                    </div>
+                    <!-- <input type="hidden" id="longitude" name="longitude">
+                    <input type="hidden" id="latitude" name="latitude"> -->
                     <div class="col-md-6">
                       <div class="form-floating">
                         <input type="text" class="form-control" id="longitude" name="longitude">
@@ -588,9 +598,11 @@
                         </div>
                       </div>
                     </div>
+
+
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <select class="form-select" id="ocean_proximity" aria-label="Ocean Proximity">
+                        <select class="form-select" id="ocean_proximity" name="ocean_proximity">
                           <option value="INLAND" selected>INLAND</option>
                           <option value="NEAR BAY">NEAR BAY</option>
                           <option value="&lt;1H OCEAN">&lt;1H OCEAN</option>
@@ -607,10 +619,34 @@
                     </div>
                   </form><!-- End floating Labels Form -->
 
-                  <div id="prediction-result-form"></div>
+              
                 </div>
               </div>
             </div><!-- End Prediction modules -->
+
+
+            <!-- Prediction result -->
+            <div class="col-12 prediction-result-form-container">
+              <div class="card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+                    <li><a class="dropdown-item" href="#">KNN</a></li>
+                    <li><a class="dropdown-item" href="#">Linear Regression</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Prediction Result <span>KNN method</span></h5>
+                  <div id="prediction-result-form"></div>  <!-- Placeholder for the prediction result -->
+                </div>
+
+              </div>
+            </div><!-- End Prediction result -->
 
 
             <!-- Reports -->
@@ -631,7 +667,7 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Reports <span>/Today</span></h5>
+                  <h5 class="card-title">California Housing Reports <span>/Today</span></h5>
 
                   <!-- Line Chart -->
                   <div id="reportsChart"></div>
@@ -643,10 +679,10 @@
                           name: 'Sales',
                           data: [31, 40, 28, 51, 42, 82, 56],
                         }, {
-                          name: 'Revenue',
+                          name: 'Rented',
                           data: [11, 32, 45, 32, 34, 52, 41]
                         }, {
-                          name: 'Customers',
+                          name: 'Land',
                           data: [15, 11, 32, 18, 9, 24, 11]
                         }],
                         chart: {
@@ -695,153 +731,7 @@
               </div>
             </div><!-- End Reports -->
 
-            <!-- Recent Sales -->
-            <div class="col-12">
-              <div class="card recent-sales overflow-auto">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Recent Sales <span>| Today</span></h5>
-
-                  <table class="table table-borderless datatable">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row"><a href="#">#2457</a></th>
-                        <td>Brandon Jacob</td>
-                        <td><a href="#" class="text-primary">At praesentium minu</a></td>
-                        <td>$64</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2147</a></th>
-                        <td>Bridie Kessler</td>
-                        <td><a href="#" class="text-primary">Blanditiis dolor omnis similique</a></td>
-                        <td>$47</td>
-                        <td><span class="badge bg-warning">Pending</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2049</a></th>
-                        <td>Ashleigh Langosh</td>
-                        <td><a href="#" class="text-primary">At recusandae consectetur</a></td>
-                        <td>$147</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2644</a></th>
-                        <td>Angus Grady</td>
-                        <td><a href="#" class="text-primar">Ut voluptatem id earum et</a></td>
-                        <td>$67</td>
-                        <td><span class="badge bg-danger">Rejected</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2644</a></th>
-                        <td>Raheem Lehner</td>
-                        <td><a href="#" class="text-primary">Sunt similique distinctio</a></td>
-                        <td>$165</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                </div>
-
-              </div>
-            </div><!-- End Recent Sales -->
-
-            <!-- Top Selling -->
-            <div class="col-12">
-              <div class="card top-selling overflow-auto">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body pb-0">
-                  <h5 class="card-title">Top Selling <span>| Today</span></h5>
-
-                  <table class="table table-borderless">
-                    <thead>
-                      <tr>
-                        <th scope="col">Preview</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Sold</th>
-                        <th scope="col">Revenue</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="static/img/product-1.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Ut inventore ipsa voluptas nulla</a></td>
-                        <td>$64</td>
-                        <td class="fw-bold">124</td>
-                        <td>$5,828</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="static/img/product-2.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Exercitationem similique doloremque</a></td>
-                        <td>$46</td>
-                        <td class="fw-bold">98</td>
-                        <td>$4,508</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="static/img/product-3.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Doloribus nisi exercitationem</a></td>
-                        <td>$59</td>
-                        <td class="fw-bold">74</td>
-                        <td>$4,366</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="static/img/product-4.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Officiis quaerat sint rerum error</a></td>
-                        <td>$32</td>
-                        <td class="fw-bold">63</td>
-                        <td>$2,016</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="static/img/product-5.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Sit unde debitis delectus repellendus</a></td>
-                        <td>$79</td>
-                        <td class="fw-bold">41</td>
-                        <td>$3,239</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                </div>
-
-              </div>
-            </div><!-- End Top Selling -->
+            
 
           </div>
         </div><!-- End Left side columns -->
@@ -873,7 +763,7 @@
                   <div class="activite-label">32 min</div>
                   <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
                   <div class="activity-content">
-                    Quia quae rerum <a href="#" class="fw-bold text-dark">explicabo officiis</a> beatae
+                    Prediction upload <a href="#" class="fw-bold text-dark">house.csv</a> file
                   </div>
                 </div><!-- End activity item-->
 
@@ -881,7 +771,7 @@
                   <div class="activite-label">56 min</div>
                   <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
                   <div class="activity-content">
-                    Voluptatem blanditiis blanditiis eveniet
+                    Pridiction form 70291$
                   </div>
                 </div><!-- End activity item-->
 
@@ -889,7 +779,7 @@
                   <div class="activite-label">2 hrs</div>
                   <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
                   <div class="activity-content">
-                    Voluptates corrupti molestias voluptatem
+                    Pridiction form 72990$
                   </div>
                 </div><!-- End activity item-->
 
@@ -897,7 +787,7 @@
                   <div class="activite-label">1 day</div>
                   <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
                   <div class="activity-content">
-                    Tempore autem saepe <a href="#" class="fw-bold text-dark">occaecati voluptatem</a> tempore
+                    Prediction upload <a href="#" class="fw-bold text-dark">california.csv</a> file
                   </div>
                 </div><!-- End activity item-->
 
@@ -905,7 +795,7 @@
                   <div class="activite-label">2 days</div>
                   <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
                   <div class="activity-content">
-                    Est sit eum reiciendis exercitationem
+                    Prediction form 239828$
                   </div>
                 </div><!-- End activity item-->
 
@@ -913,7 +803,7 @@
                   <div class="activite-label">4 weeks</div>
                   <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
                   <div class="activity-content">
-                    Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
+                    Prediction form 100209$
                   </div>
                 </div><!-- End activity item-->
 
@@ -938,7 +828,7 @@
             </div>
 
             <div class="card-body pb-0">
-              <h5 class="card-title">Budget Report <span>| This Month</span></h5>
+              <h5 class="card-title">California Real Estate Report <span>| This Month</span></h5>
 
               <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
 
@@ -951,41 +841,41 @@
                     radar: {
                       // shape: 'circle',
                       indicator: [{
-                          name: 'Sales',
+                          name: 'Los Angeles',
                           max: 6500
                         },
                         {
-                          name: 'Administration',
+                          name: 'San Fransisco',
                           max: 16000
                         },
                         {
-                          name: 'Information Technology',
+                          name: 'San Diego',
                           max: 30000
                         },
                         {
-                          name: 'Customer Support',
+                          name: 'San Jose',
                           max: 38000
                         },
                         {
-                          name: 'Development',
+                          name: 'Sacramento',
                           max: 52000
                         },
                         {
-                          name: 'Marketing',
+                          name: 'Fresno',
                           max: 25000
                         }
                       ]
                     },
                     series: [{
-                      name: 'Budget vs spending',
+                      name: 'Sales vs Rented',
                       type: 'radar',
                       data: [{
                           value: [4200, 3000, 20000, 35000, 50000, 18000],
-                          name: 'Allocated Budget'
+                          name: 'Sales'
                         },
                         {
                           value: [5000, 14000, 28000, 26000, 42000, 21000],
-                          name: 'Actual Spending'
+                          name: 'Rented'
                         }
                       ]
                     }]
@@ -1012,7 +902,7 @@
             </div>
 
             <div class="card-body pb-0">
-              <h5 class="card-title">Website Traffic <span>| Today</span></h5>
+              <h5 class="card-title">Rrediction Analysis <span>| Today</span></h5>
 
               <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
 
@@ -1047,23 +937,23 @@
                       },
                       data: [{
                           value: 1048,
-                          name: 'Search Engine'
+                          name: 'Los Angeles'
                         },
                         {
                           value: 735,
-                          name: 'Direct'
+                          name: 'San Fransisco'
                         },
                         {
                           value: 580,
-                          name: 'Email'
+                          name: 'San Jose'
                         },
                         {
                           value: 484,
-                          name: 'Union Ads'
+                          name: 'San Diego'
                         },
                         {
                           value: 300,
-                          name: 'Video Ads'
+                          name: 'Fresno'
                         }
                       ]
                     }]
@@ -1094,33 +984,27 @@
 
               <div class="news">
                 <div class="post-item clearfix">
-                  <img src="static/img/news-1.jpg" alt="">
-                  <h4><a href="#">Nihil blanditiis at in nihil autem</a></h4>
-                  <p>Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...</p>
+                  <img src="static/img/house_for_sale_1.jpeg" alt="">
+                  <h4><a href="#">House in Los Angeles</a></h4>
+                  <p>State 128 Hwy, Napa, CA 94558</p>
                 </div>
 
                 <div class="post-item clearfix">
-                  <img src="static/img/news-2.jpg" alt="">
-                  <h4><a href="#">Quidem autem et impedit</a></h4>
-                  <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...</p>
+                  <img src="static/img/house_for_sale_2.jpeg" alt="">
+                  <h4><a href="#">House in Los Angeles</a></h4>
+                  <p>3 bed 3 bath 1,900sqft 1,900 square...</p>
                 </div>
 
                 <div class="post-item clearfix">
-                  <img src="static/img/news-3.jpg" alt="">
-                  <h4><a href="#">Id quia et et ut maxime similique occaecati ut</a></h4>
-                  <p>Fugiat voluptas vero eaque accusantium eos. Consequuntur sed ipsam et totam...</p>
+                  <img src="static/img/house_for_sale_3.jpeg" alt="">
+                  <h4><a href="#">House in San Fransisco</a></h4>
+                  <p>$2,150,000 Camino Del Monte 1 Se Torres, Carmel, CA 93921</p>
                 </div>
 
                 <div class="post-item clearfix">
-                  <img src="static/img/news-4.jpg" alt="">
-                  <h4><a href="#">Laborum corporis quo dara net para</a></h4>
-                  <p>Qui enim quia optio. Eligendi aut asperiores enim repellendusvel rerum cuder...</p>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="static/img/news-5.jpg" alt="">
-                  <h4><a href="#">Et dolores corrupti quae illo quod dolor</a></h4>
-                  <p>Odit ut eveniet modi reiciendis. Atque cupiditate libero beatae dignissimos eius...</p>
+                  <img src="static/img/house_for_sale_4.jpeg" alt="">
+                  <h4><a href="#">House in San Sacramento</a></h4>
+                  <p>State 129 Hwy, Napa, CA 94558</p>
                 </div>
 
               </div><!-- End sidebar recent posts-->
@@ -1172,7 +1056,36 @@
       fileNameDisplay.textContent = fileName;  // Update the text content of the span element
     }
   </script>
+<script>
+  var mymap = L.map('mapid').setView([34.052235, -118.243683], 10); // Los Angeles coordinates with zoom level 10
 
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+      maxZoom: 18,
+  }).addTo(mymap);
+
+  var marker;
+
+  function onMapClick(e) {
+      var lat = e.latlng.lat;
+      var lon = e.latlng.lng;
+
+      // Remove existing marker if there is one
+      if (marker) {
+          mymap.removeLayer(marker);
+      }
+
+      // Add a new marker
+      marker = L.marker([lat, lon]).addTo(mymap);
+
+      // Update hidden form fields
+      document.getElementById('longitude').value = lon;
+      document.getElementById('latitude').value = lat;
+  }
+
+  mymap.on('click', onMapClick);
+</script>
 </body>
 
 </html>
