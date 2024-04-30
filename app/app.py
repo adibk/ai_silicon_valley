@@ -3,6 +3,11 @@ import pandas as pd
 import joblib
 import os
 
+import sys
+sys.path.append('src')
+
+from lib import city_api
+
 app = Flask(__name__)
 model_path = "model"
 
@@ -25,12 +30,12 @@ def predict():
     if file:
         df = pd.read_csv(file)
         predictions = model.predict(df)
-        return str(predictions)
+        df['median_house_value'] = predictions
+        return str(df.to_json(orient='records'))
 
 @app.route('/predict_manual', methods=['POST'])
 def predict_manual():
     try:
-        # Collect all form data
         data = {
             'longitude': float(request.form['longitude']),
             'latitude': float(request.form['latitude']),
@@ -43,15 +48,21 @@ def predict_manual():
             'ocean_proximity': request.form['ocean_proximity']
         }
         
-        # Convert the form data into a DataFrame
+        print('data')
+        # coordinates = (data['latitude'], data['longitude'])
+        # city = city_api.geocode_batch(coordinates)
+        
         df = pd.DataFrame([data])
-        # Predict using the loaded model
         predictions = model.predict(df)
-        return f"Predicted House Value: {predictions[0]}"
+        return f"{predictions[0]}"
     except Exception as e:
         return f"Error processing input data: {str(e)}"
 
-    
+@app.route('/pages-blank')
+def pages_blank():
+    return render_template('pages-blank.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 

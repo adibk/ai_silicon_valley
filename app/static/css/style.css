@@ -1,10 +1,51 @@
-/**
-* Template Name: NiceAdmin
-* Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-* Updated: Apr 20 2024 with Bootstrap v5.3.3
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
+/*--------------------------------------------------------------
+# Added
+--------------------------------------------------------------*/
+.notif-img {
+  /* width: 10px; */
+  max-height: 40px;
+  margin-right: 15px;
+}
+
+.choose-file-btn {
+  display: inline-block;
+  margin-right: 50px;
+}
+         
+.btn {
+  /* background-image: linear-gradient(to right, #83a4d4 0%, #b6fbff  51%, #83a4d4  100%); */
+  /* background-image: linear-gradient(to right, #24C6DC 0%, #514A9D  51%, #24C6DC  100%); */
+  /* background-image: linear-gradient(to right, #77A1D3 0%, #79CBCA  51%, #77A1D3  100%); */
+  /* background-image: linear-gradient(to right, #1FA2FF 0%, #12D8FA  51%, #1FA2FF  100%); */
+  /* background-image: linear-gradient(to right, #00c6ff 0%, #0072ff  51%, #00c6ff  100%); */
+  background-image: linear-gradient(to right, #56CCF2 0%, #2F80ED  51%, #56CCF2  100%);
+  margin: 0 5px;
+  padding: 7px 25px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;            
+  box-shadow: 0 0 20px #eee;
+  /* border-radius: 10px; */
+  display: inline-block;
+  border: none
+}
+
+.btn:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+input:valid {
+  background-color: white !important;
+  border-color: #ccc !important;
+}
+
+.prediction-result-container, .prediction-result-form-container {
+  display: none;
+}
 
 /*--------------------------------------------------------------
 # General
